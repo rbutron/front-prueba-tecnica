@@ -1,6 +1,19 @@
-FROM nginx:1.15-alpine
+# Stage 1
+FROM node:10.15.3-alpine as node
 
-COPY ./dist/front-prueba-tecnica/usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /usr/src/app
 
-EXPOSE 80
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# Stage 2
+FROM nginx:1.14.2-alpine
+
+COPY --from=node /usr/src/app/dist/front-prueba-tecnica /usr/share/nginx/html
+
+COPY nginx/nginx.conf /etc/nginx/nginx.conf

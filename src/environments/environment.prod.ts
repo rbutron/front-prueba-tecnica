@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: '/test-banco/api'
+    apiUrl: 'http://localost:7777/test-banco/api'
 };
